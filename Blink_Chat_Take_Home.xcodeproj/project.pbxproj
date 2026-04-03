@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		03BA50D02F7FEF6300BE6F51 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = 03BA50CF2F7FEF6300BE6F51 /* README.md */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		03DC2C452F7F5BCC00860AF9 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -24,6 +28,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		03BA50CF2F7FEF6300BE6F51 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		03DC2C352F7F5BCB00860AF9 /* Blink_Chat_Take_Home.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Blink_Chat_Take_Home.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DC2C442F7F5BCC00860AF9 /* Blink_Chat_Take_HomeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Blink_Chat_Take_HomeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		03DC2C4E2F7F5BCC00860AF9 /* Blink_Chat_Take_HomeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Blink_Chat_Take_HomeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -75,6 +80,7 @@
 		03DC2C2C2F7F5BCB00860AF9 = {
 			isa = PBXGroup;
 			children = (
+				03BA50CF2F7FEF6300BE6F51 /* README.md */,
 				03DC2C372F7F5BCB00860AF9 /* Blink_Chat_Take_Home */,
 				03DC2C472F7F5BCC00860AF9 /* Blink_Chat_Take_HomeTests */,
 				03DC2C512F7F5BCC00860AF9 /* Blink_Chat_Take_HomeUITests */,
@@ -212,6 +218,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				03BA50D02F7FEF6300BE6F51 /* README.md in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
