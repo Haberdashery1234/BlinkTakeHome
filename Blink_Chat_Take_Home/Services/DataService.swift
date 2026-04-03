@@ -17,10 +17,13 @@ final class DataService {
     ///   - filename: Name of the JSON file (without extension)
     ///   - modelContext: SwiftData model context for persistence
     /// - Throws: Errors related to file loading or JSON parsing
-    func loadConversationsFromJSON(filename: String = "code_test_data", modelContext: ModelContext) async throws {
+    nonisolated func loadConversationsFromJSON(filename: String = "code_test_data", modelContext: ModelContext) async throws {
         // Check if data already exists
         let descriptor = FetchDescriptor<Conversation>()
-        let existingConversations = try modelContext.fetch(descriptor)
+        
+        let existingConversations = try await MainActor.run {
+            try modelContext.fetch(descriptor)
+        }
         
         // Only load if database is empty (offline-first approach)
         guard existingConversations.isEmpty else {
@@ -65,31 +68,33 @@ final class DataService {
         print("Decoded \(decodableConversations.count) conversations")
         
         // Convert to SwiftData models
-        for decodableConv in decodableConversations {
-            let conversation = Conversation(
-                id: decodableConv.id,
-                name: decodableConv.name,
-                lastUpdated: try Self.parseDate(decodableConv.last_updated)
-            )
-            
-            modelContext.insert(conversation)
-            
-            // Add messages to conversation
-            for decodableMsg in decodableConv.messages {
-                let message = Message(
-                    id: decodableMsg.id,
-                    text: decodableMsg.text,
-                    lastUpdated: try Self.parseDate(decodableMsg.last_updated)
+        try await MainActor.run {
+            for decodableConv in decodableConversations {
+                let conversation = Conversation(
+                    id: decodableConv.id,
+                    name: decodableConv.name,
+                    lastUpdated: try Self.parseDate(decodableConv.last_updated)
                 )
-                message.conversation = conversation
-                modelContext.insert(message)
+                
+                modelContext.insert(conversation)
+                
+                // Add messages to conversation
+                for decodableMsg in decodableConv.messages {
+                    let message = Message(
+                        id: decodableMsg.id,
+                        text: decodableMsg.text,
+                        lastUpdated: try Self.parseDate(decodableMsg.last_updated)
+                    )
+                    message.conversation = conversation
+                    modelContext.insert(message)
+                }
+                
+                print("  Added conversation: \(conversation.name) with \(decodableConv.messages.count) messages")
             }
             
-            print("  Added conversation: \(conversation.name) with \(decodableConv.messages.count) messages")
+            try modelContext.save()
+            print("Successfully loaded and saved \(decodableConversations.count) conversations to SwiftData")
         }
-        
-        try modelContext.save()
-        print("Successfully loaded and saved \(decodableConversations.count) conversations to SwiftData")
     }
     
     private static func parseDate(_ dateString: String) throws -> Date {
